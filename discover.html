@@ -13,9 +13,8 @@
     window.onload = function() {
         var mobileMediaQuery = window.matchMedia("(min-width: 769px)");
         if (mobileMediaQuery.matches) {
-            if (window.location.href.endsWith("/") || window.location.href.includes("index.html")) {
-                console.log("Redirecting to discover.html");
-                window.location.href = "discover.html";
+            if (window.location.href.includes("discover.html")) {
+                window.location.href = "index.html";
             }
         }
     };
