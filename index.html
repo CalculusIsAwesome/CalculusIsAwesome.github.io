@@ -33,6 +33,26 @@
     <title>Wonder</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Helvetica+Neue:wght@300;400;700&display=swap" rel="stylesheet">
+
+    <script>
+    // This function runs when the page loads
+    window.onload = function() {
+        // Get the screen width of the device
+        var screenWidth = window.innerWidth;
+
+        // Define your breakpoint (e.g., 768px is a common width for iPads and smaller devices)
+        var mobileBreakpoint = 768;
+
+        // Check if the screen is smaller than the breakpoint (mobile/ipad)
+        if (screenWidth <= mobileBreakpoint) {
+            // If the current page is the desktop version (index.html), redirect to discover.html
+            if (window.location.pathname.includes("index.html")) {
+                window.location.href = "discover.html";
+            }
+        } 
+    };
+</script>
+
     <style>
         /* Base styling */
         body {
