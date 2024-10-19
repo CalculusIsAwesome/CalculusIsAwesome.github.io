@@ -6,24 +6,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Google Fonts for Helvetica Neue -->
     <link href="https://fonts.googleapis.com/css2?family=Helvetica+Neue:wght@300;400;700&display=swap" rel="stylesheet">
+    
     <script>
-    // This function runs when the page loads
     window.onload = function() {
-        // Get the screen width of the device
-        var screenWidth = window.innerWidth;
-
-        // Define your breakpoint (e.g., 768px is a common width for iPads and smaller devices)
-        var mobileBreakpoint = 768;
-
-        // Check if the screen is smaller than the breakpoint (mobile/ipad)
-        if (screenWidth >= mobileBreakpoint) {
-            // If the current page is the mobile version (discover.html) and user is on desktop, redirect to index.html
-            if (window.location.pathname.includes("discover.html")) {
-                window.location.href = "index.html";
+    <script>
+    window.onload = function() {
+        var mobileMediaQuery = window.matchMedia("(min-width: 769px)");
+        if (mobileMediaQuery.matches) {
+            if (window.location.href.endsWith("/") || window.location.href.includes("index.html")) {
+                console.log("Redirecting to discover.html");
+                window.location.href = "discover.html";
             }
         }
     };
-</script>
+    </script>
 
     <style>
         /* Import AlgaLight Font */
