@@ -1,4 +1,4 @@
-<!DOCTYPE html> 
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -20,70 +20,101 @@
         body {
             margin: 0;
             font-family: 'Helvetica Neue', sans-serif;
-            background-color: #000;
+            background-color: #000; /* Solid black background */
             color: #e0e0e0;
             overflow-x: hidden;
             overflow-y: auto;
             position: relative;
         }
 
-        /* Aurora Borealis Background for Header */
-        .aurora-header {
-            position: fixed;
+        /* Aurora Borealis Top Background */
+        .aurora-top {
+            position: absolute;
             top: 0;
             left: 0;
             width: 100%;
-            height: 100px; /* Height enough to cover header */
-            background: linear-gradient(-240deg, rgba(255,0,150,0.3), rgba(0,204,255,0.3), rgba(0,255,150,0.3));
+            height: 60vh; /* Adjust height as needed to cover up to first scroller */
+            background: linear-gradient(-240deg, rgba(255,0,150,0.3), rgba(0,204,255,0.2), rgba(0,255,150,0.3)),
+                        linear-gradient(60deg, rgba(0,204,255,0.3), rgba(255,0,150,0.3));
+            background-size: cover;
             filter: blur(80px);
-            opacity: 0.7;
+            opacity: 0.8;
             pointer-events: none;
-            z-index: -1;
+            z-index: -2;
+            /* Fade out to black */
+            mask-image: linear-gradient(to bottom, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 50%, rgba(255, 255, 255, 1) 80%, rgba(255, 255, 255, 0) 100%);
+    -webkit-mask-image: linear-gradient(to bottom, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 50%, rgba(255, 255, 255, 1) 80%, rgba(255, 255, 255, 0) 100%);
+
         }
 
-        /* Aurora Borealis Background for Footer */
+        /* Aurora Borealis Footer Background */
         .aurora-footer {
-            position: fixed;
+            position: absolute;
             bottom: 0;
             left: 0;
             width: 100%;
-            height: 100px; /* Height enough to cover footer */
-            background: linear-gradient(-60deg, rgba(255,0,150,0.3), rgba(0,204,255,0.3), rgba(0,255,150,0.3));
+            height: 40vh; /* Adjust height as needed */
+            background: linear-gradient(-60deg, rgba(255,0,150,0.5), rgba(0,204,255,0.5), rgba(0,255,150,0.5)),
+                        linear-gradient(120deg, rgba(0,204,255,0.3), rgba(255,0,150,0.3));
+            background-size: cover;
             filter: blur(80px);
-            opacity: 0.7;
+            opacity: 0.8;
             pointer-events: none;
-            z-index: -1;
+            z-index: -2;
+            /* Fade in from black */
+            mask-image: linear-gradient(to top, rgba(255,255,255,1), rgba(255,255,255,0));
+            -webkit-mask-image: linear-gradient(to top, rgba(255,255,255,1), rgba(255,255,255,0));
         }
 
-        /* Fixed, Faded Header */
+        /* Fixed, Centered Header */
         .header {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
-            background: rgba(0, 0, 0, 0.7); /* Semi-transparent background */
-            color: #ffffff;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.0), rgba(0, 0, 0, 1));
             padding: 15px 2vw;
             display: flex;
-            justify-content: space-between;
-            align-items: center;
+            flex-direction: column; /* Stack items vertically */
+            align-items: center; /* Center items horizontally */
             z-index: 1001;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.5);
-            -webkit-backdrop-filter: blur(10px); /* WebKit-specific for better backdrop */
-            backdrop-filter: blur(10px);
         }
 
         .header .scroll-title {
             font-family: 'AlgaLight', sans-serif;
-            font-size: 2rem;
-            margin: 0;
+    font-size: 2rem;
+    margin: 0;
+    text-align: center;
+    font-weight: 100;
+    padding: 5px 0 0 30px;
+        }
+
+
+        /* Hide the header initially */
+        .header.hidden {
+    opacity: 0;
+    -webkit-transition: opacity 0.5s ease-in; /* Safari */
+    transition: opacity 0.5s ease-in;
+}
+
+/* Show the header when it is scrolled into view */
+.header.visible {
+    opacity: 1;
+    -webkit-transition: opacity 0.5s ease-in; /* Safari */
+    transition: opacity 0.5s ease-in;
+}
+
+
+        nav {
+            margin-left: auto;
+            margin-right: auto;
         }
 
         .header nav ul {
             list-style: none;
             display: flex;
             gap: 25px;
-            margin: 0;
+            margin: 10px 0 0 0; /* Add top margin for spacing */
             padding: 0;
         }
 
@@ -99,21 +130,25 @@
             color: #ff4081;
         }
 
-        /* Spacer to offset fixed header */
-        .header-spacer {
-            height: 70px; /* Adjust based on header height */
-        }
+
 
         /* Main Content Styling */
         .content {
             padding: 15px 20px; /* Adjusted side padding */
-            background-color: #000; /* Ensure middle is black */
+            background-color: transparent; /* Transparent to show aurora where applicable */
+            position: relative;
+            z-index: 1;
+            /* Ensure content between auroras is black */
+            background: linear-gradient(to bottom, transparent 0%, transparent 60vh, #000 60vh, #000 100%),
+                        linear-gradient(to top, #000 0%, #000 60vh, transparent 60vh, transparent 100%);
         }
 
         /* Main Header Section */
         .main-header {
             text-align: center;
             padding: 60px 0 20px 0; /* Removed side padding, only top and bottom */
+            position: relative;
+            z-index: 2;
         }
 
         .main-header h1 {
@@ -122,6 +157,8 @@
             font-weight: 400;
             color: #ffffff;
             margin: 0;
+            position: relative;
+            z-index: 2;
         }
 
         .main-header .translations {
@@ -196,6 +233,7 @@
 
         .image-text-section .text {
             width: 100%;
+            text-align: center; /* Center text */
         }
 
         .image-text-section h2 {
@@ -210,6 +248,7 @@
             font-size: 1rem;
             color: #a0a0a0;
             line-height: 1.5;
+            text-align: left; /* Maintain left alignment for readability */
         }
 
         /* Masonry Layout Section */
@@ -287,10 +326,11 @@
         /* Footer Styling */
         .footer {
             position: relative;
-            background-color: #000;
+            background-color: transparent; /* Transparent to show aurora */
             color: #e0e0e0;
             padding: 60px 20px; /* Increased side padding */
             font-family: 'Helvetica Neue', sans-serif;
+            z-index: 1;
         }
 
         .footer-container {
@@ -301,7 +341,7 @@
             gap: 20px;
             text-align: center;
             position: relative;
-            z-index: 1;
+            z-index: 2;
         }
 
         .footer-left h1 {
@@ -342,17 +382,24 @@
             text-decoration: underline;
         }
 
+        /* Prevent Footer from Being Hidden by Fixed Header */
+        #contact {
+            scroll-margin-top: 120px; /* Adjust based on header height */
+        }
+
         /* Responsive Design */
         @media (max-width: 768px) {
             .image-scroll img, .four-image-section .image-container {
-                max-width: 250px;
-                width: 85%; /* Maintain the same width ratio */
+                
+                max-width: 400px;
+                width: 95%;
+            
             }
 
             .header {
-                flex-direction: row; /* Keep horizontal layout */
+                flex-direction: row; /* Stack items vertically */
                 align-items: center;
-                justify-content: space-between;
+                justify-content: center;
             }
 
             .header .scroll-title {
@@ -360,8 +407,9 @@
             }
 
             .header nav ul {
-                flex-direction: row;
-                gap: 15px;
+                flex-direction: row; /* Stack navigation links vertically */
+                gap: 20px; /* Reduced gap */
+                margin: 10px 0 0 0; /* Add top margin for spacing */
             }
 
             .footer-container {
@@ -383,7 +431,7 @@
             }
 
             .main-header h1 {
-                font-size: 2.5rem;
+                font-size: 5.5rem;
             }
         }
 
@@ -397,44 +445,57 @@
         .four-image-section::-webkit-scrollbar {
             display: none; /* Safari and Chrome */
         }
+
+        /* Base fade-in class for elements */
+.fade-in {
+    opacity: 0;
+    transform: translateY(30px); /* Elements start slightly lower */
+    transition: opacity 0.8s ease-out;
+    will-change: opacity; /* Hint for browsers to optimize */
+}
+
+/* Class to apply when the element is in view */
+.fade-in.visible {
+    opacity: 1;
+}
+
     </style>
 </head>
 <body>
 
-    <!-- Aurora Borealis Background for Header -->
-    <div class="aurora-header"></div>
+    <!-- Aurora Borealis Top Background -->
+    <div class="aurora-top fade-in"></div>
 
-    <!-- Fixed, Faded Header -->
-    <header class="header">
+    <!-- Fixed, Centered Header -->
+    <header class="header hidden">
         <h2 class="scroll-title">Wonder</h2>
         <nav>
             <ul>
                 <li><a href="#purpose">Purpose</a></li>
+                <li><a href="#features">Features</a></li>
                 <li><a href="#contact">Contact</a></li>
             </ul>
         </nav>
     </header>
 
-    <!-- Spacer to offset fixed header -->
-    <div class="header-spacer"></div>
 
     <!-- Main Content -->
     <div class="content" id="main-content">
 
         <!-- Main Header -->
         <header class="main-header">
-            <h1>Wonder</h1>
-            <p class="translations">
+            <h1 class="fade-in">Wonder</h1>
+            <p class="translations fade-in">
                 Merveille • Чудо • Maravilla • عجوبة • Wunder • 奇迹 • Meraviglia • అద్భుతం
             </p>
         </header>
 
         <!-- Horizontally Scrollable Purpose Section -->
-        <section class="scroll-section" id="purpose">
+        <section class="scroll-section fade-in" id="purpose">
             <!-- Removed h2 "Features" -->
             <div class="image-scroll">
-                <img src="./images/carousel/1.jpg" alt="Educational Media" loading="lazy">
-                <img src="./images/carousel/3.jpg" alt="AI Reading Assistant" loading="lazy">
+                <img src="./images/carousel/1.jpg" alt="Educational Media" loading="eager">
+                <img src="./images/carousel/3.jpg" alt="AI Reading Assistant" loading="eager">
                 <img src="./images/carousel/6.png" alt="STEM Learning" loading="lazy">
                 <img src="./images/carousel/2.jpg" alt="Interactive Adventures" loading="lazy">
                 <img src="./images/carousel/4.jpg" alt="Multilingual Support" loading="lazy">
@@ -445,24 +506,23 @@
 
         <!-- Overview Section -->
         <section class="image-text-section">
-            <img src="./images/carousel/3.jpg" alt="Overview Image" loading="lazy">
-            <div class="text">
+            <div class="text fade-in" style="margin-bottom: 12vh;">
                 <h2>Overview</h2>
                 <p>Wonder is an immersive, story-driven educational game designed to enhance learning for youth and support English comprehension for non-native speakers. Set in a vibrant digital art world, players engage in interactive adventures, STEM activities, and literacy challenges. The game integrates AI and a culturally inclusive approach, aligning with educational curricula to create an engaging and effective learning experience.</p>
-                <h2>Purpose</h2>
-                <p>As AI and STEM become integral to education and daily life, Wonder addresses the need to supplement traditional learning with technology integration and language support. It aims to improve English literacy and STEM understanding among students, especially newcomer youth. By leveraging engaging educational technology, Wonder enhances academic success and helps all students adapt to evolving standards.</p>  
             </div>
+            <img class="fade-in" src="./images/carousel/3.jpg" alt="Overview Image" loading="eager">
+
         </section>
 
         <!-- Masonry Layout Section -->
-        <section class="masonry-section" id="features">
-            <div class="masonry-text">
-                <h2>Multilingual Literacy Support</h2>
+        <section class="masonry-section" id="features" style="margin-bottom: 6vh;">
+            <div class="masonry-text fade-in">
+                <h2 style="text-align: center;">Multilingual Literacy</h2>
                 <p>Wonder features an AI-powered Reading Assistant that supports multiple languages, catering to students with varying English proficiency levels. Real-time translation and text-to-speech capabilities enable players to effortlessly navigate content and enhance comprehension. An advanced captioning system highlights key concepts with interactive, color-coded keywords that display definitions when clicked. Additionally, a comprehensive dictionary allows instant lookup of new words and phrases, making language learning intuitive and enjoyable for all students. These features expand English vocabulary and understanding, benefiting both native and non-native speakers through an immersive, inclusive learning experience.</p>
             </div>
-            <div class="image-scroll">
-                <img src="./images/carousel/1.jpg" alt="Educational Media" loading="lazy">
-                <img src="./images/carousel/2.jpg" alt="Multilingual Support" loading="lazy">
+            <div class="image-scroll fade-in">
+                <img src="./images/carousel/1.jpg" alt="Educational Media" loading="eager">
+                <img src="./images/carousel/2.jpg" alt="Multilingual Support" loading="eager">
                 <img src="./images/carousel/3.jpg" alt="Interactive Features" loading="lazy">
                 <img src="./images/carousel/4.jpg" alt="AI Integration" loading="lazy">
                 <img src="./images/carousel/5.jpg" alt="Culturally Inclusive" loading="lazy">
@@ -470,14 +530,14 @@
         </section>
 
         <!-- Additional Masonry Layout Section -->
-        <section class="masonry-section">
-            <div class="masonry-text-2">
+        <section class="masonry-section" style="margin-bottom: 6vh;">
+            <div class="masonry-text-2 fade-in">
                 <h2>Hands-On STEM Learning</h2>
                 <p>Wonder introduces students to STEM concepts through hands-on, story-driven challenges. Using intuitive block-based coding, kids engage in virtual building and problem-solving tasks that help the story protagonist overcome obstacles. These interactive challenges make STEM learning accessible, supporting the development of problem-solving skills and basic STEM knowledge in a fun, narrative-driven way that appeals to diverse learners.</p>
             </div>
-            <div class="image-scroll">
-                <img src="./images/carousel/1.jpg" alt="Educational Media" loading="lazy">
-                <img src="./images/carousel/2.jpg" alt="Multilingual Support" loading="lazy">
+            <div class="image-scroll fade-in">
+                <img src="./images/carousel/1.jpg" alt="Educational Media" loading="eager">
+                <img src="./images/carousel/2.jpg" alt="Multilingual Support" loading="eager">
                 <img src="./images/carousel/3.jpg" alt="Interactive Features" loading="lazy">
                 <img src="./images/carousel/4.jpg" alt="AI Integration" loading="lazy">
             </div>
@@ -485,21 +545,20 @@
 
         <!-- Educational Integration and Impact Section -->
         <section class="image-text-section">
-            <img src="./images/carousel/3.jpg" alt="Educational Integration" loading="lazy">
-            <div class="text">
-                <h2>Educational Integration and Impact</h2>
+            <div class="text fade-in">
+                <h2>Educational Integration</h2>
                 <p>Wonder seeks to integrate education curriculum in collaboration with educational experts, for instance, to align with provincial standards and enable educators to integrate it into classrooms and extracurricular programs. To assess impact on student engagement and literacy outcomes, the game will incorporate research and feedback loops to highlight progress. The focus of Wonder is to benefit student learning as a versatile tool for educational settings.</p>
             </div>
         </section>
 
         <!-- Four Image Section with Captions -->
-        <section class="four-image-section">
+        <section class="four-image-section fade-in" style="margin-bottom: 12vh;">
             <div class="image-container">
-                <img src="./images/carousel/3.jpg" alt="Innovation Unleashed" loading="lazy">
+                <img src="./images/carousel/3.jpg" alt="Innovation Unleashed" loading="eager">
                 <h3>Innovation Unleashed</h3>
             </div>
             <div class="image-container">
-                <img src="./images/carousel/4.jpg" alt="Discover New Perspectives" loading="lazy">
+                <img src="./images/carousel/4.jpg" alt="Discover New Perspectives" loading="eager">
                 <h3>Discover New Perspectives</h3>
             </div>
             <div class="image-container">
@@ -514,7 +573,7 @@
 
     </div>
 
-    <!-- Aurora Borealis Background for Footer -->
+    <!-- Aurora Borealis Footer Background -->
     <div class="aurora-footer"></div>
 
     <!-- Footer Section -->
@@ -539,4 +598,42 @@
     </footer>
 
 </body>
+
+<script>
+    const header = document.querySelector('.header');
+
+    // Show the header when the user scrolls down
+    window.addEventListener('scroll', () => {
+        if (window.scrollY > 150) { // Adjust this value to the scroll position where the header should appear
+            header.classList.add('visible');
+            header.classList.remove('hidden');
+        } else {
+            header.classList.remove('visible');
+            header.classList.add('hidden');
+        }
+    });
+
+
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const fadeInElements = document.querySelectorAll('.fade-in');
+        
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target); // Stop observing once the element is visible
+                }
+            });
+        }, {
+            threshold: 0.1, // Trigger when at least 10% of the element is visible
+        });
+        
+        fadeInElements.forEach(element => {
+            observer.observe(element);
+        });
+    });
+</script>
+
 </html>
