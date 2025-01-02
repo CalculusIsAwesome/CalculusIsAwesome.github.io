@@ -1,652 +1,1427 @@
-
 <!DOCTYPE html>
 <html lang="en">
+
+
 <head>
-    <meta charset="UTF-8">
-    <title>Wonder</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- Google Fonts for Helvetica Neue -->
-    <link href="https://fonts.googleapis.com/css2?family=Helvetica+Neue:wght@300;400;700&display=swap" rel="stylesheet">
-    
-    <script>
-    window.onload = function() {
-        var mobileMediaQuery = window.matchMedia("(min-width: 769px)");
-        if (mobileMediaQuery.matches) {
-            if (window.location.href.includes("discover.html")) {
-                window.location.href = "index.html";
-            }
+  <!-- Required Meta Tags -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- SEO Meta Tags -->
+  <meta name="description"
+    content="Wonder is an immersive, story-driven educational game designed to enhance English literacy and STEM learning for youth. Explore interactive adventures, AI-powered features, and multilingual support to foster academic success and creativity.">
+  <meta name="author" content="Wonder">
+  <meta name="keywords"
+    content="Wonder, Educational Game, English Literacy, STEM Learning, Multilingual Support, AI Reading Assistant, Interactive Adventures, Youth Education, Culturally Inclusive, Educational Technology">
+
+  <!-- Open Graph Meta Tags -->
+  <meta property="og:title" content="Wonder">
+  <meta property="og:description"
+    content="Discover Wonder, an immersive educational game that enhances English literacy and STEM skills through interactive adventures and AI-powered tools.">
+  <meta property="og:image" content="https://playwonder.ca/images/carousel/planet.png"> <!-- Replace with your image URL -->
+  <meta property="og:url" content="https://playwonder.ca"> <!-- Replace with your website URL -->
+  <meta property="og:type" content="website">
+
+  <!-- Twitter Card Meta Tags -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Wonder">
+  <meta name="twitter:description"
+    content="Discover Wonder, an immersive educational game that enhances English literacy and STEM skills through interactive adventures and AI-powered tools.">
+  <meta name="twitter:image" content="https://playwonder.ca/images/carousel/planet.png"> <!-- Replace with your image URL -->
+
+  <!-- Canonical Link -->
+  <link rel="canonical" href="https://www.playwonder.ca/">
+
+  <!-- Robots Meta Tag -->
+  <meta name="robots" content="index, follow">
+
+  <!-- Page Title -->
+  <title>Wonder</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Helvetica+Neue:wght@300;400;700&display=swap" rel="stylesheet">
+  <link href="styles.css" rel="stylesheet" type="text/css">
+  <script>
+    window.onload = function () {
+      var mobileMediaQuery = window.matchMedia("(max-width: 768px)");
+      if (mobileMediaQuery.matches) {
+        if (window.location.href.endsWith("/") || window.location.href.includes("index.html")) {
+          console.log("Redirecting to discover.html");
+          window.location.href = "discover.html";
         }
+      }
     };
-    </script>
+  </script>
 
-    <style>
-        /* Import AlgaLight Font */
-        @font-face {
-            font-family: 'AlgaLight';
-            src: url('./fonts/Alga-Light.woff2') format('woff2');
-            font-weight: normal;
-            font-style: normal;
-            font-display: swap; /* Improves loading behavior */
-        }
+  <style>
+    /* Base styling */
+    body {
+      margin: 0;
+      font-family: 'Helvetica Neue', sans-serif;
+      background-color: #000;
+      color: #e0e0e0;
+      overflow-x: hidden;
+      overflow-y: hidden;
+      /* Changed to auto to allow scrolling */
+    }
 
-        /* Base Styling */
-        body {
-            margin: 0;
-            font-family: 'Helvetica Neue', sans-serif;
-            background-color: #000; /* Solid black background */
-            color: #e0e0e0;
-            overflow-x: hidden;
-            overflow-y: auto;
-            position: relative;
-        }
+    /* Fullscreen Video Styling */
+    #intro-video {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      object-fit: cover;
+      z-index: 10;
+      opacity: 1;
+      transition: opacity 2s ease-out;
+    }
 
-        /* Aurora Borealis Top Background */
-        .aurora-top {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 60vh; /* Adjust height as needed to cover up to first scroller */
-            background: linear-gradient(90deg, rgba(255,0,150,0.3), rgba(0,204,255,0.2), rgba(0,255,150,0.3)),
-                        linear-gradient(60deg, rgba(0,204,255,0.3), rgba(255,0,150,0.3));
-            background-size: cover;
-            filter: blur(80px);
-            opacity: 0.8;
-            pointer-events: none;
-            z-index: -2;
-            /* Fade out to black */
-            mask-image: linear-gradient(to bottom, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 50%, rgba(255, 255, 255, 1) 80%, rgba(255, 255, 255, 0) 100%);
-    -webkit-mask-image: linear-gradient(to bottom, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 1) 50%, rgba(255, 255, 255, 1) 80%, rgba(255, 255, 255, 0) 100%);
+    /* Fade-in effect for content */
+    .content {
+      opacity: 0;
+      transition: opacity 1.5s ease-in;
+    }
 
-        }
+    .content.visible {
+      opacity: 1;
+    }
 
-        /* Aurora Borealis Footer Background */
-        .aurora-footer {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 40vh; /* Adjust height as needed */
-            background: linear-gradient(-60deg, rgba(255,0,150,0.5), rgba(0,204,255,0.5), rgba(0,255,150,0.5)),
-                        linear-gradient(120deg, rgba(0,204,255,0.3), rgba(255,0,150,0.3));
-            background-size: cover;
-            filter: blur(80px);
-            opacity: 0.8;
-            pointer-events: none;
-            z-index: -2;
-            /* Fade in from black */
-            mask-image: linear-gradient(to top, rgba(255,255,255,1), rgba(255,255,255,0));
-            -webkit-mask-image: linear-gradient(to top, rgba(255,255,255,1), rgba(255,255,255,0));
-        }
+    .header {
+      padding-top: 50px;
+      /* Adds space for fixed top header */
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      background: #000;
+      position: relative;
+    }
 
-        /* Fixed, Centered Header */
-        .header {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            background: linear-gradient(to top, rgba(0, 0, 0, 0.0), rgba(0, 0, 0, 1));
-            padding: 15px 2vw;
-            display: flex;
-            flex-direction: column; /* Stack items vertically */
-            align-items: center; /* Center items horizontally */
-            z-index: 1001;
-        }
+    .header h1 {
+      font-family: 'AlgaLight', 'Times New Roman', serif;
+      font-size: 7rem;
+      font-weight: 100;
+      letter-spacing: 0px;
+      color: #ffffff;
+      margin: 0;
+    }
 
-        .header .scroll-title {
-            font-family: 'AlgaLight', sans-serif;
-    font-size: 2rem;
-    margin: 0;
-    text-align: center;
-    font-weight: 100;
-    padding: 5px 0 0 30px;
-        }
+    .header h1.visible {
+      opacity: 1;
+      font-size: 7rem;
+      /* Shrinks to original size */
+      transform: translateY(0);
+    }
 
+    .header .translations {
+      font-family: 'Helvetica Neue', sans-serif;
+      font-size: 1.2rem;
+      font-weight: 300;
+      color: #b0b0b0;
+      margin-top: 10px;
+      letter-spacing: 1px;
+    }
 
-        /* Hide the header initially */
-        .header.hidden {
-    opacity: 0;
-    -webkit-transition: opacity 0.5s ease-in; /* Safari */
-    transition: opacity 0.5s ease-in;
+    @font-face {
+      font-family: 'AlgaLight';
+      src: url('./fonts/Alga-Light.woff2') format('woff2');
+      font-weight: normal;
+      font-style: normal;
+    }
+
+    /* Carousel Section */
+    .carousel-container {
+      width: 100vw;
+      height: 70vh;
+      perspective: 1500px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      background-color: #000;
+    }
+
+    .carousel {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      transform-style: preserve-3d;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      transform-origin: center;
+    }
+
+    .carousel-item {
+      position: absolute;
+      width: 380px;
+      height: 200px;
+      background: #333;
+      box-shadow: 0 20px 30px rgba(0, 0, 0, 0.7);
+      transform-style: preserve-3d;
+      transition: width 0.5s ease-in-out, height 0.5s ease-in-out, box-shadow 0.5s ease-in-out;
+      border-radius: 15px;
+      will-change: transform, width, height, box-shadow;
+      transform: rotateY(0deg) translateZ(600px) translate3d(0, 0, 0);
+    }
+
+    .carousel-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 15px;
+      image-rendering: smooth;
+  /* Fallbacks for better rendering */
+  image-rendering: -webkit-optimize-contrast; /* Safari */
+  image-rendering: crisp-edges;
+  image-rendering: high-quality;
+    }
+
+    .carousel-item:hover,
+    .carousel-item.active {
+      width: 400px;
+      height: 220px;
+      box-shadow: 0px 15px 25px rgba(255, 255, 255, 0.5),
+        0px -15px 25px rgba(255, 255, 255, 0.5),
+        15px 0px 25px rgba(255, 255, 255, 0.5),
+        -15px 0px 25px rgba(255, 255, 255, 0.3);
+      z-index: 999;
+    }
+/* Position each carousel item around the Y-axis */
+.carousel-item:nth-child(1) {
+  transform: rotateY(0deg) translateZ(600px) translate3d(0, 0, 0);
 }
 
-/* Show the header when it is scrolled into view */
-.header.visible {
-    opacity: 1;
-    -webkit-transition: opacity 0.5s ease-in; /* Safari */
-    transition: opacity 0.5s ease-in;
+.carousel-item:nth-child(2) {
+  transform: rotateY(51deg) translateZ(600px) translate3d(0, 0, 0);
 }
 
-
-        nav {
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        .header nav ul {
-            list-style: none;
-            display: flex;
-            gap: 25px;
-            margin: 10px 0 0 0; /* Add top margin for spacing */
-            padding: 0;
-        }
-
-        .header nav ul li a {
-            color: #ffffff;
-            text-decoration: none;
-            font-size: 1rem;
-            font-family: 'Helvetica Neue', sans-serif;
-            transition: color 0.3s ease;
-        }
-
-        .header nav ul li a:hover {
-            color: #ff4081;
-        }
-
-
-
-        /* Main Content Styling */
-        .content {
-            padding: 15px 20px; /* Adjusted side padding */
-            background-color: transparent; /* Transparent to show aurora where applicable */
-            position: relative;
-            z-index: 1;
-            /* Ensure content between auroras is black */
-            background: linear-gradient(to bottom, transparent 0%, transparent 60vh, #000 60vh, #000 100%),
-                        linear-gradient(to top, #000 0%, #000 60vh, transparent 60vh, transparent 100%);
-        }
-
-        /* Main Header Section */
-        .main-header {
-            text-align: center;
-            padding: 60px 0 20px 0; /* Removed side padding, only top and bottom */
-            position: relative;
-            z-index: 2;
-        }
-
-        .main-header h1 {
-            font-family: 'AlgaLight', serif;
-            font-size: 3rem;
-            font-weight: 400;
-            color: #ffffff;
-            margin: 0;
-            position: relative;
-            z-index: 2;
-        }
-
-        .main-header .translations {
-            font-family: 'Helvetica Neue', sans-serif;
-            font-size: 1rem;
-            font-weight: 300;
-            color: #b0b0b0;
-            margin-top: 10px;
-            letter-spacing: 1px;
-        }
-
-        /* Horizontally Scrollable Image Sections */
-        .scroll-section {
-            margin: 40px 0;
-        }
-
-        /* Removed h2 "Features" */
-
-        .image-scroll {
-            display: flex;
-            overflow-x: auto;
-            gap: 15px;
-            padding-bottom: 10px;
-            scroll-snap-type: x mandatory;
-            -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
-            height: 50vh; /* Takes up about 50% of the vertical view */
-            padding-left: 20px; /* Align first image with content padding */
-            padding-right: calc(50vw - 175px - 3px); /* Reduced by 3px for flush alignment */
-            margin-left: -20px; /* Negate the content's left padding */
-            margin-right: -20px; /* Allow images to extend beyond the right */
-        }
-
-        .image-scroll img {
-            flex: 0 0 auto;
-            width: 350px; /* Fixed width for consistency */
-            max-width: 350px;
-            border-radius: 10px;
-            object-fit: cover;
-            scroll-snap-align: center;
-            position: relative;
-            height: 100%; /* Make images take full height of the scroller */
-        }
-
-        /* Adjust for minimal visibility of next image */
-        .image-scroll img::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            right: -10%;
-            width: 20%;
-            height: 100%;
-            background: linear-gradient(to right, transparent, #000);
-            pointer-events: none;
-        }
-
-        /* Overview Section */
-        .image-text-section {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            margin: 20px auto;
-            max-width: 800px;
-            padding: 20px 0;
-        }
-
-        .image-text-section img {
-            width: 100%;
-            border-radius: 10px;
-            margin-bottom: 20px;
-            object-fit: cover;
-        }
-
-        .image-text-section .text {
-            width: 100%;
-            text-align: center; /* Center text */
-        }
-
-        .image-text-section h2 {
-            font-size: 2rem;
-            font-weight: 400;
-            color: #ffffff;
-            margin-bottom: 10px;
-            font-family: 'AlgaLight', serif;
-        }
-
-        .image-text-section p {
-            font-size: 1rem;
-            color: #a0a0a0;
-            line-height: 1.5;
-            text-align: left; /* Maintain left alignment for readability */
-        }
-
-        /* Masonry Layout Section */
-        .masonry-section {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 10px;
-            padding: 20px 0;
-        }
-
-        .masonry-text, .masonry-text-2 {
-            color: #ffffff;
-            padding: 10px 0;
-        }
-
-        .masonry-text h2, .masonry-text-2 h2 {
-            font-size: 2rem;
-            font-weight: 400;
-            margin-bottom: 10px;
-            font-family: 'AlgaLight', serif;
-        }
-
-        .masonry-text p, .masonry-text-2 p {
-            font-size: 1rem;
-            color: #a0a0a0;
-            line-height: 1.5;
-        }
-
-        .masonry-item img {
-            width: 100%;
-            border-radius: 10px;
-            object-fit: cover;
-        }
-
-        /* Four Image Section */
-        .four-image-section {
-            display: flex;
-            overflow-x: auto;
-            gap: 15px;
-            padding-bottom: 10px;
-            scroll-snap-type: x mandatory;
-            -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
-            height: 50vh; /* Takes up about 50% of the vertical view */
-            padding-left: 20px; /* Align first image with content padding */
-            padding-right: calc(50vw - 175px - 3px); /* Reduced by 3px for flush alignment */
-            margin-left: -20px; /* Negate the content's left padding */
-            margin-right: -20px; /* Allow images to extend beyond the right */
-        }
-
-        .four-image-section .image-container {
-            flex: 0 0 auto;
-            width: 350px; /* Fixed width for consistency */
-            max-width: 350px;
-            text-align: center;
-            position: relative;
-            scroll-snap-align: center;
-            height: 100%; /* Make containers take full height of the scroller */
-        }
-
-        .four-image-section .image-container img {
-            width: 100%;
-            border-radius: 10px;
-            object-fit: cover;
-            height: 80%; /* Leave space for captions */
-        }
-
-        .four-image-section .image-container h3 {
-            color: #ffffff;
-            margin-top: 10px;
-            font-size: 1rem;
-            font-family: 'AlgaLight', serif;
-            font-weight: 400;
-        }
-
-        /* Footer Styling */
-        .footer {
-            position: relative;
-            background-color: transparent; /* Transparent to show aurora */
-            color: #e0e0e0;
-            padding: 60px 20px; /* Increased side padding */
-            font-family: 'Helvetica Neue', sans-serif;
-            z-index: 1;
-        }
-
-        .footer-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-            text-align: center;
-            position: relative;
-            z-index: 2;
-        }
-
-        .footer-left h1 {
-            font-family: 'AlgaLight', sans-serif;
-            font-size: 2rem;
-            font-weight: 400;
-            color: #ffffff;
-            margin: 0;
-        }
-
-        .footer-right {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-            text-align: center;
-        }
-
-        .footer-column h3 {
-            font-size: 1.5rem;
-            margin-bottom: 10px;
-            color: #ffffff;
-            font-family: 'AlgaLight', serif;
-            font-weight: 400;
-        }
-
-        .footer-column p {
-            font-size: 0.9rem;
-            line-height: 1.6;
-            color: #a0a0a0;
-        }
-
-        .footer-column a {
-            color: #ff4081;
-            text-decoration: none;
-        }
-
-        .footer-column a:hover {
-            text-decoration: underline;
-        }
-
-        /* Prevent Footer from Being Hidden by Fixed Header */
-        #contact {
-            scroll-margin-top: 120px; /* Adjust based on header height */
-        }
-
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            .image-scroll img, .four-image-section .image-container {
-                
-                max-width: 400px;
-                width: 95%;
-            
-            }
-
-            .header {
-                flex-direction: row; /* Stack items vertically */
-                align-items: center;
-                justify-content: center;
-            }
-
-            .header .scroll-title {
-                font-size: 1.5rem;
-            }
-
-            .header nav ul {
-                flex-direction: row; /* Stack navigation links vertically */
-                gap: 20px; /* Reduced gap */
-                margin: 10px 0 0 0; /* Add top margin for spacing */
-            }
-
-            .footer-container {
-                flex-direction: column;
-                align-items: center;
-                text-align: center;
-            }
-
-            .footer-left h1 {
-                font-size: 1.5rem;
-            }
-
-            .footer-column h3 {
-                font-size: 1.2rem;
-            }
-
-            .footer-column p {
-                font-size: 0.9rem;
-            }
-
-            .main-header h1 {
-                font-size: 5.5rem;
-            }
-        }
-
-        /* Hide Scrollbars */
-        .image-scroll, .four-image-section {
-            scrollbar-width: none; /* Firefox */
-            -ms-overflow-style: none;  /* IE 10+ */
-        }
-
-        .image-scroll::-webkit-scrollbar,
-        .four-image-section::-webkit-scrollbar {
-            display: none; /* Safari and Chrome */
-        }
-
-        /* Base fade-in class for elements */
-.fade-in {
-    opacity: 0;
-    transform: translateY(30px); /* Elements start slightly lower */
-    transition: opacity 0.8s ease-out;
-    will-change: opacity; /* Hint for browsers to optimize */
+.carousel-item:nth-child(3) {
+  transform: rotateY(102deg) translateZ(600px) translate3d(0, 0, 0);
 }
 
-/* Class to apply when the element is in view */
-.fade-in.visible {
-    opacity: 1;
+.carousel-item:nth-child(4) {
+  transform: rotateY(154deg) translateZ(600px) translate3d(0, 0, 0);
 }
 
-    </style>
+.carousel-item:nth-child(5) {
+  transform: rotateY(205deg) translateZ(600px) translate3d(0, 0, 0);
+}
+
+.carousel-item:nth-child(6) {
+  transform: rotateY(257deg) translateZ(600px) translate3d(0, 0, 0);
+}
+
+.carousel-item:nth-child(7) {
+  transform: rotateY(308deg) translateZ(600px) translate3d(0, 0, 0);
+}
+
+    /* Aurora Borealis Effect */
+    .aurora-container {
+      position: absolute;
+      top: -20vh;
+      /* Extend upwards */
+      left: 0;
+      width: 100%;
+      height: 320vh;
+      /* Reduced overall height */
+      background: linear-gradient(-240deg, rgba(255, 0, 150, 0.3), rgba(0, 204, 255, 0.3), rgba(0, 255, 150, 0.3));
+      background-size: 200% 200%;
+      filter: blur(80px);
+      /* Increased blur for longer fade */
+      opacity: 0.7 !important;
+      animation: aurora 12s ease-in-out infinite alternate;
+      pointer-events: none;
+      /* Allows clicks to pass through */
+      z-index: -1;
+      /* Places it behind other content */
+    }
+
+    @keyframes aurora {
+      0% {
+        background-position: 0% 50%;
+      }
+
+      50% {
+        background-position: 100% 50%;
+      }
+
+      100% {
+        background-position: 0% 50%;
+      }
+    }
+
+
+    .aurora-container::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      /* Create a gradient that fades from opaque black at the bottom to transparent at the top */
+      background: linear-gradient(to top, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 1) 46%, rgba(0, 0, 0, 0.7) 61%, rgba(0, 0, 0, 0.4) 68%, rgba(0, 0, 0, 0) 73%);
+      pointer-events: none;
+      
+    }
+
+
+    /* Spacer styling */
+    .spacer {
+      height: 100px;
+      /* Adjusted for better spacing */
+      background-color: #000;
+    }
+
+    /* New Image with Text Section */
+    .image-text-section {
+      display: flex;
+      max-width: 1200px;
+      margin: 2rem auto;
+      padding: 1rem;
+      gap: 20px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .image-text-section img {
+      width: 60%;
+      border-radius: 10px;
+    }
+
+    .image-text-section .text {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding-left: 20px;
+    }
+
+    .image-text-section h2 {
+      font-size: 2.5rem;
+      font-weight: 400;
+      color: #ffffff;
+      margin-bottom: 1rem;
+    }
+
+    .image-text-section p {
+      font-size: 1.1rem;
+      color: #a0a0a0;
+      line-height: 1.5;
+    }
+
+    /* Masonry Layout */
+    .masonry-section {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: auto auto auto;
+      gap: 10px;
+      padding: 0.5rem 0.5rem 1.5rem 0.5rem;
+      max-width: 1200px;
+      margin: 0 auto;
+      background: #000;
+    }
+
+    .masonry-text {
+      grid-column: 2;
+      grid-row: 1;
+      color: #ffffff;
+      padding-left: 10px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      margin-top: -20px;
+      align-self: flex-start;
+    }
+
+    .masonry-text-2 {
+      grid-column: 1;
+      grid-row: 1;
+      color: #ffffff;
+      padding-right: 20px;
+      padding-bottom: 40px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      margin-top: -20px;
+      align-self: flex-start;
+      text-align: left;
+    }
+
+    .masonry-text h2,
+    .masonry-text-2 h2 {
+      font-size: 2.5rem;
+      font-weight: 400;
+      margin-bottom: 1rem;
+    }
+
+
+    .masonry-text p,
+    .masonry-text-2 p {
+      font-size: 1.1rem;
+      color: #a0a0a0;
+      line-height: 1.5;
+      margin: 0;
+    }
+
+    .masonry-item {
+      border-radius: 10px;
+      box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.4);
+      overflow: hidden;
+    }
+
+    .masonry-item img {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: cover;
+      border-radius: 10px;
+    }
+
+    /* Specific layout for items */
+    .masonry-item-1 {
+      grid-column: 1;
+      grid-row: 1;
+      width: 90%;
+      height: 220px;
+      margin-left: auto;
+    }
+
+    .masonry-item-2 {
+      grid-column: 1 / span 2;
+      grid-row: 2;
+      display: grid;
+      grid-template-columns: 1.5fr 1fr;
+      gap: 10px;
+    }
+
+    .masonry-item-3 {
+      height: 400px;
+    }
+
+    .masonry-item-4 {
+      height: 400px;
+    }
+
+    .masonry-item-5-container {
+      grid-column: 1 / span 2;
+      grid-row: 3;
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .masonry-item-5 {
+      width: 350px;
+      height: 240px;
+    }
+
+    .masonry-item-6 {
+      width: 450px;
+      height: 280px;
+    }
+
+    /* Four Image Section */
+    .four-image-section {
+      display: flex;
+      justify-content: space-around;
+      max-width: 1200px;
+      margin: 2rem auto;
+      padding: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .four-image-section .image-container {
+      flex: 1;
+      text-align: center;
+      margin: 10px;
+    }
+
+    .four-image-section img {
+      width: 100%;
+      height: 100%;
+      border-radius: 10px;
+      object-fit: cover;
+    }
+
+    .four-image-section h3 {
+      color: #ffffff;
+      margin-top: 10px;
+      font-size: 1.2rem;
+      font-family: 'AlgaLight';
+      font-weight: 100;
+    }
+
+    /* Initial state for text (blur) */
+    .text,
+    .masonry-text,
+    .masonry-text-2,
+    .four-image-section h3 {
+      opacity: 0;
+      filter: blur(5px);
+      transform: translateY(100px);
+      transition: opacity 0.8s ease-out, filter 0.8s ease-out, transform 0.8s ease-out;
+    }
+
+    .ipad-text,
+    .ipad-subtext {
+      opacity: 0;
+      filter: blur(5px);
+      transform: translateY(100px);
+      transition: opacity 4s ease-out, filter 2s ease-out, transform 1s ease-out;
+    }
+
+    /* Initial state for images (fade-in + move up) */
+    .image-text-section img,
+    .masonry-item img,
+    .four-image-section .image-container img {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 1s ease-out, transform 1s ease-out;
+    }
+
+    /* Visible state */
+    .text.visible,
+    .masonry-text.visible,
+    .masonry-text-2.visible,
+    .four-image-section h3.visible,
+    .image-text-section img.visible,
+    .masonry-item img.visible,
+    .four-image-section .image-container img.visible,
+    .ipad-text.visible,
+    .ipad-subtext.visible {
+      opacity: 1;
+      filter: blur(0);
+      transform: translateY(0);
+    }
+
+
+    #wonder-text {
+      opacity: 0;
+      filter: blur(40px);
+      transition: filter 2s ease-in, opacity 1.5s ease-in;
+    }
+
+    #translations {
+      opacity: 0;
+      filter: blur(40px);
+      transition: filter 2.5s ease-in, opacity 2s ease-in;
+    }
+
+    #wonder-text.visible,
+    #translations.visible {
+      opacity: 1;
+      filter: blur(0);
+    }
+
+    /* New Sections Styling */
+    .section {
+      padding: 4rem 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .section h2 {
+      font-size: 3rem;
+      color: #ffffff;
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .section p {
+      font-size: 1.2rem;
+      color: #a0a0a0;
+      line-height: 1.6;
+      text-align: center;
+      max-width: 800px;
+      margin: 0 auto 2rem auto;
+    }
+
+    /* Key Features Styling */
+    .features-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-around;
+      gap: 1rem;
+    }
+
+    .feature {
+      background: #1a1a1a;
+      padding: 1.2rem;
+      border-radius: 10px;
+      flex: 1 1 300px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+      transition: transform 0.3s;
+    }
+
+    .feature:hover {
+      transform: translateY(-10px);
+    }
+
+    .feature img {
+      width: 100%;
+      object-fit: contain;
+      margin-bottom: 1rem;
+    }
+
+    .feature h3 {
+      font-size: 1.8rem;
+      margin-bottom: 1rem;
+      color: #ffffff;
+    }
+
+    .feature p {
+      font-size: 1rem;
+      color: #a0a0a0;
+      line-height: 1.5;
+    }
+
+    /* Responsive Adjustments */
+    @media (max-width: 768px) {
+      .scroll-bar {
+        flex-direction: column;
+        height: auto;
+        /* Allow height to adjust based on content */
+        padding: 10px 20px;
+      }
+
+      .scroll-bar .scroll-bar-content {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .scroll-bar nav ul {
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .scroll-title {
+        margin-bottom: 10px;
+      }
+
+      /* Adjust Key Features for Mobile */
+      .features-container {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .feature {
+        flex: 1 1 100%;
+      }
+
+      /* Adjust Image-Text Section */
+      .image-text-section {
+        flex-direction: column;
+      }
+
+      .image-text-section img {
+        width: 100%;
+      }
+
+      .image-text-section .text {
+        padding-left: 0;
+        margin-top: 1rem;
+      }
+
+      /* Adjust Masonry Layout */
+      .masonry-section {
+        grid-template-columns: 1fr;
+      }
+
+
+
+      /* Adjust Four Image Section */
+      .four-image-section {
+        flex-direction: column;
+      }
+
+      .four-image-section .image-container {
+        margin: 10px 0;
+      }
+    }
+  </style>
+  <style>
+    /* Import AlgaLight Font */
+    @font-face {
+      font-family: 'AlgaLight';
+      src: url('./fonts/Alga-Light.woff2') format('woff2');
+      font-weight: normal;
+      font-style: normal;
+      font-display: swap;
+      /* Improves loading behavior */
+    }
+
+    /* Scroll Bar Styling */
+    .scroll-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      /* Updated background with gradient */
+      background: linear-gradient(to top, rgba(0, 0, 0, 0.0), rgba(0, 0, 0, 1));
+      color: #ffffff;
+      padding: 15px 2vw;
+      opacity: 0;
+      transform: translateY(-100%);
+      /* Enhanced transitions */
+      transition: opacity 0.5s ease, transform 0.5s ease, background 0.5s ease;
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      height: 60px;
+      box-sizing: border-box;
+      overflow: hidden;
+    }
+
+    .scroll-bar.visible {
+      opacity: 1;
+      transform: translateY(0);
+      /* Slightly darker gradient when visible */
+      background: linear-gradient(to top, rgba(0, 0, 0, 0.0), rgba(0, 0, 0, 1));
+    }
+
+
+    /* Scroll Bar Content */
+    .scroll-bar .scroll-bar-content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      position: relative;
+      /* To position pseudo-element correctly */
+    }
+
+    /* Scroll Title */
+    .scroll-title {
+      margin: 0;
+      font-size: 2rem;
+      font-family: 'AlgaLight', 'Times New Roman', serif;
+
+      font-weight: 100;
+      letter-spacing: 0px;
+      color: #ffffff;
+      white-space: nowrap;
+      /* Prevent text from wrapping */
+    }
+
+    /* Navigation Links */
+    .scroll-bar nav ul {
+      list-style: none;
+      display: flex;
+      gap: 20px;
+      margin: 0;
+      padding: 0;
+    }
+
+    .scroll-bar nav ul li a {
+      color: #ffffff;
+      text-decoration: none;
+      font-size: 1rem;
+      transition: color 0.3s ease;
+      white-space: nowrap;
+      /* Prevent text from wrapping */
+    }
+
+    .scroll-bar nav ul li a:hover {
+      color: #ff4081;
+      /* Accent color on hover */
+    }
+
+    /* Responsive Adjustments */
+    @media (max-width: 768px) {
+      .scroll-bar {
+        flex-direction: column;
+        height: auto;
+        /* Allow height to adjust based on content */
+        padding: 10px 20px;
+      }
+
+      .scroll-bar .scroll-bar-content {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .scroll-bar nav ul {
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .scroll-title {
+        margin-bottom: 10px;
+      }
+    }
+
+    /* Adjust main content padding to account for scroll-bar height */
+    .scroll-bar.visible+.header,
+    .scroll-bar.visible+.content {
+      padding-top: 70px;
+      /* Adjust based on scroll-bar height */
+    }
+  </style>
 </head>
+
 <body>
 
-    <!-- Aurora Borealis Top Background -->
-    <div class="aurora-top fade-in"></div>
+  <!-- Scroll Bar (Appears on Scroll) -->
+  <div class="scroll-bar" id="scroll-bar">
+    <div class="scroll-bar-content">
+      <h2 class="scroll-title">Wonder</h2>
+      <nav>
+        <ul>
+          <li><a href="#purpose">Purpose</a></li>
+          <li><a href="#features">Features</a></li>
+          <li><a href="#literacy">Literacy</a></li>
+          <li><a href="#STEM">STEM</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </nav>
+    </div>
+  </div>
 
-    <!-- Fixed, Centered Header -->
-    <header class="header hidden">
-        <h2 class="scroll-title">Wonder</h2>
-        <nav>
-            <ul>
-                <li><a href="#purpose">Purpose</a></li>
-                <li><a href="#features">Features</a></li>
-                <li><a href="#contact">Contact</a></li>
-            </ul>
-        </nav>
+  <script>
+    // Scroll Bar Show/Hide on Scroll
+    document.addEventListener("DOMContentLoaded", function () {
+      const scrollBar = document.getElementById("scroll-bar");
+      const showAfter = 100; // Show after 100px of scrolling
+
+      window.addEventListener("scroll", function () {
+        if (window.scrollY > showAfter) {
+          scrollBar.classList.add("visible");
+        } else {
+          scrollBar.classList.remove("visible");
+        }
+      });
+    });
+  </script>
+
+  <!-- Fullscreen Intro Video -->
+  <video id="intro-video" autoplay muted playsinline>
+    <source src="./video/intro.mp4" type="video/mp4">
+    Your browser does not support the video tag.
+  </video>
+  <div class="content" id="main-content">
+
+    <!-- Header -->
+    <header class="header">
+      <h1 id="wonder-text">Wonder</h1>
+      <p id="translations" class="translations">
+        Merveille • Чудо • Maravilla • عجوبة • Wunder • 奇迹 • Meraviglia • అద్భుతం
+      </p>
     </header>
 
-
-    <!-- Main Content -->
-    <div class="content" id="main-content">
-
-        <!-- Main Header -->
-        <header class="main-header">
-            <h1 class="fade-in">Wonder</h1>
-            <p class="translations fade-in">
-                Merveille • Чудо • Maravilla • عجوبة • Wunder • 奇迹 • Meraviglia • అద్భుతం
-            </p>
-        </header>
-
-        <!-- Horizontally Scrollable Purpose Section -->
-        <section class="scroll-section fade-in" id="purpose">
-            <!-- Removed h2 "Features" -->
-            <div class="image-scroll">
-                <img src="./images/carousel/bridge.png" alt="Educational Media" loading="eager">
-                <img src="./images/carousel/library.png" alt="AI Reading Assistant" loading="eager">
-                <img src="./images/carousel/river.png" alt="STEM Learning" loading="lazy">
-                <img src="./images/carousel/earth.png" alt="Interactive Adventures" loading="lazy">
-                <img src="./images/carousel/lighthouse.png" alt="Multilingual Support" loading="lazy">
-                <img src="./images/carousel/library.png" alt="Cultural Inclusion" loading="lazy">
-                <img src="./images/carousel/palm.png" alt="Curriculum Alignment" loading="lazy">
-            </div>
-        </section>
-
-        <!-- Overview Section -->
-        <section class="image-text-section">
-            <div class="text fade-in" style="margin-bottom: 12vh;">
-                <h2>Overview</h2>
-                <p>Wonder is an immersive, story-driven educational game designed to enhance learning for youth and support English comprehension for non-native speakers. Set in a vibrant digital art world, players engage in interactive adventures, STEM activities, and literacy challenges. The game integrates AI and a culturally inclusive approach, aligning with educational curricula to create an engaging and effective learning experience.</p>
-            </div>
-            <img class="fade-in" src="./images/carousel/library.png" alt="Overview Image" loading="eager">
-
-        </section>
-
-        <!-- Masonry Layout Section -->
-        <section class="masonry-section" id="features" style="margin-bottom: 6vh;">
-            <div class="masonry-text fade-in">
-                <h2 style="text-align: center;">Multilingual Literacy</h2>
-                <p>Wonder features an AI-powered Reading Assistant that supports multiple languages, catering to students with varying English proficiency levels. Real-time translation and text-to-speech capabilities enable players to effortlessly navigate content and enhance comprehension. An advanced captioning system highlights key concepts with interactive, color-coded keywords that display definitions when clicked. Additionally, a comprehensive dictionary allows instant lookup of new words and phrases, making language learning intuitive and enjoyable for all students. These features expand English vocabulary and understanding, benefiting both native and non-native speakers through an immersive, inclusive learning experience.</p>
-            </div>
-            <div class="image-scroll fade-in">
-                <img src="./images/carousel/bridge.png" alt="Educational Media" loading="eager">
-                <img src="./images/carousel/earth.png" alt="Multilingual Support" loading="eager">
-                <img src="./images/carousel/library.png" alt="Interactive Features" loading="lazy">
-                <img src="./images/carousel/lighthouse.png" alt="AI Integration" loading="lazy">
-                <img src="./images/carousel/palm.png" alt="Culturally Inclusive" loading="lazy">
-            </div>
-        </section>
-
-        <!-- Additional Masonry Layout Section -->
-        <section class="masonry-section" style="margin-bottom: 6vh;">
-            <div class="masonry-text-2 fade-in">
-                <h2>Hands-On STEM Learning</h2>
-                <p>Wonder introduces students to STEM concepts through hands-on, story-driven challenges. Using intuitive block-based coding, kids engage in virtual building and problem-solving tasks that help the story protagonist overcome obstacles. These interactive challenges make STEM learning accessible, supporting the development of problem-solving skills and basic STEM knowledge in a fun, narrative-driven way that appeals to diverse learners.</p>
-            </div>
-            <div class="image-scroll fade-in">
-                <img src="./images/carousel/bridge.png" alt="Educational Media" loading="eager">
-                <img src="./images/carousel/earth.png" alt="Multilingual Support" loading="eager">
-                <img src="./images/carousel/library.png" alt="Interactive Features" loading="lazy">
-                <img src="./images/carousel/lighthouse.png" alt="AI Integration" loading="lazy">
-            </div>
-        </section>
-
-        <!-- Educational Integration and Impact Section -->
-        <section class="image-text-section">
-            <div class="text fade-in">
-                <h2>Educational Integration</h2>
-                <p>Wonder seeks to integrate education curriculum in collaboration with educational experts, for instance, to align with provincial standards and enable educators to integrate it into classrooms and extracurricular programs. To assess impact on student engagement and literacy outcomes, the game will incorporate research and feedback loops to highlight progress. The focus of Wonder is to benefit student learning as a versatile tool for educational settings.</p>
-            </div>
-        </section>
-
-        <!-- Four Image Section with Captions -->
-        <section class="four-image-section fade-in" style="margin-bottom: 12vh;">
-            <div class="image-container">
-                <img src="./images/carousel/library.png" alt="Innovation Unleashed" loading="eager">
-                <h3>Innovation Unleashed</h3>
-            </div>
-            <div class="image-container">
-                <img src="./images/carousel/lighthouse.png" alt="Discover New Perspectives" loading="eager">
-                <h3>Discover New Perspectives</h3>
-            </div>
-            <div class="image-container">
-                <img src="./images/carousel/bridge.png" alt="Endless Creativity" loading="lazy">
-                <h3>Endless Creativity</h3>
-            </div>
-            <div class="image-container">
-                <img src="./images/carousel/earth.png" alt="Limitless Imagination" loading="lazy">
-                <h3>Limitless Imagination</h3>
-            </div>
-        </section>
-
+    <!-- Carousel Section -->
+    <div class="carousel-container">
+      <div class="carousel" id="carousel">
+        <div class="carousel-item">
+          <img src="./images/carousel/river.png" alt="Educational Media">
+        </div>
+        <div class="carousel-item">
+          <img src="./images/carousel/earth.png" alt="AI Reading Assistant">
+        </div>
+        <div class="carousel-item">
+          <img src="./images/carousel/bridge.png" alt="STEM Learning">
+        </div>
+        <div class="carousel-item">
+          <img src="./images/carousel/library.png" alt="Interactive Adventures">
+        </div>
+        <div class="carousel-item">
+          <img src="./images/carousel/palm.png" alt="Multilingual Support">
+        </div>
+        <div class="carousel-item">
+          <img src="./images/carousel/planet.png" alt="Cultural Inclusion">
+        </div>
+        <div class="carousel-item">
+          <img src="./images/carousel/lighthouse.png" alt="Curriculum Alignment">
+        </div>
+      </div>
+      <div class="aurora-container"></div>
     </div>
 
-    <!-- Aurora Borealis Footer Background -->
-    <div class="aurora-footer"></div>
+    <!-- Spacer -->
 
-    <!-- Footer Section -->
-    <footer class="footer" id="contact">
-        <div class="footer-container">
-            <!-- Footer Left: Wonder Text -->
-            <div class="footer-left">
-                <h1>Wonder</h1>
-            </div>
+    <div class="spacer"></div>
+    <div class="spacer" id="purpose"></div>
 
-            <!-- Footer Right: Contact Information -->
-            <div class="footer-right">
-                <div class="footer-column">
-                    <h3>Contact</h3>
-                    <p>
-                        Email: <a href="mailto:info@playwonder.ca">info@playwonder.ca</a><br>
-                        Location: Toronto, Ontario
-                    </p>
-                </div>
-            </div>
+    <style>
+      h2 {
+        font-family: "AlgaLight";
+        padding-block-end: 0px;
+
+      }
+
+      p {
+        margin-block-start: 0px;
+
+      }
+    </style>
+
+    <!-- Masonry Layout Section -->
+    <section class="masonry-section" style="grid-template-columns: 1fr 1.5fr;">
+
+
+      <div class="masonry-item masonry-item-1" style="align-self: end;">
+        <img src="./images/carousel/river.png" alt="Educational Media">
+      </div>
+      <div class="masonry-text" style="padding: 0 0 45px 40px;">
+        <h2
+          style="background: linear-gradient(-117deg, rgba(0, 204, 255, 0.7) 60%, rgb(204, 0, 119) 108%);background-clip: text;color: transparent;-webkit-text-fill-color: transparent;-webkit-background-clip: text;">
+          Purpose
+        </h2>
+        <p
+          style="background: linear-gradient(-118deg, rgba(0, 204, 255, 0.7) 43%, rgb(204, 0, 119) 90%);background-clip: text;color: transparent;-webkit-text-fill-color: transparent;-webkit-background-clip: text;">
+          Step into the enchanting world of Wonder, where thrilling literacy challenges and epic adventures transform
+          learning into a magical journey! This immersive, story-driven game invites youth and non-native English
+          speakers to explore a vibrant digital realm bursting with interactive quests and STEM mysteries. As AI and
+          STEM weave deeper into the fabric of our everyday lives, Wonder becomes the bridge between traditional
+          education and the future, integrating cutting-edge technology with a culturally rich narrative. Enhancing the
+          conventional classroom experience, every click leads to a new discovery, every challenge develops a new skill.
+          Aligned seamlessly with educational curricula, Wonder doesn't just teach; it inspires. It empowers newcomer
+          youth and all students to navigate and thrive in an ever-evolving world. So gear up, embrace the journey, and
+          let Wonder be your magical guide to unlocking academic excellence in the most captivating way imaginable!
+        </p>
+      </div>
+
+      <div class="masonry-item-2">
+        <div class="masonry-item masonry-item-3">
+          <img src="./images/carousel/library.png" alt="Multilingual Support">
         </div>
-    </footer>
+        <div class="masonry-item masonry-item-4">
+          <img src="./images/carousel/earth.png" alt="Interactive Features">
+        </div>
+      </div>
+      <div class="masonry-item-5-container">
+        <div class="masonry-item masonry-item-5">
+          <img src="./images/carousel/palm.png" alt="AI Integration">
+        </div>
+        <div class="masonry-item masonry-item-6">
+          <img src="./images/carousel/lighthouse.png" alt="Culturally Inclusive">
+        </div>
+      </div>
+    </section>
 
-</body>
 
-<script>
-    const header = document.querySelector('.header');
 
-    // Show the header when the user scrolls down
-    window.addEventListener('scroll', () => {
-        if (window.scrollY > 150) { // Adjust this value to the scroll position where the header should appear
-            header.classList.add('visible');
-            header.classList.remove('hidden');
-        } else {
-            header.classList.remove('visible');
-            header.classList.add('hidden');
+
+
+    <div class="section-tablet-scroll-animation" id="features">
+      <div class="p-xl-start p-xl-end">
+        <div class="text-center">
+          <div class="wow-animation">
+
+            <div class="wow-heading wow-gradient big ipad-text" style="
+  font-family: 'AlgaLight';
+  font-weight: 100;
+  background-image: linear-gradient(160deg, rgba(204, 0, 119) 40%, rgba(0, 204, 255, 0.973) 65%);
+  font-kerning: 0.2;
+  font-optical-sizing: 2;
+  letter-spacing: 1px;
+">Wonder AI</div>
+
+
+            <div class="wow-heading wow-gradient ipad-subtext" style="
+  font-family: Arial;
+  font-weight: 100;
+  background-image: linear-gradient(172deg, rgb(255 255 255 / 90%) 25%, rgb(255 255 255) 102%);
+  letter-spacing: 10px;
+  font-size: 1em;
+  margin-left: 13px;
+"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="container-w2 gutter-outside">
+      <div class="tablet-mockup-animation">
+        <div data-w-id="07715672-b316-68a9-952c-c058ea6fffce" class="_3d-tablet-wrap"
+          style="will-change: transform; transform: translate3d(0px, 0vh, 0px) scale3d(1, 1, 1) rotateX(0deg) rotateY(0deg) rotateZ(0deg) skew(0deg, 0deg); transform-style: preserve-3d;">
+          <div class="_3d-tablet-inner"
+            style="will-change: transform; transform: translate3d(0px, 0px, 0px) scale3d(1, 1, 1) rotateX(0deg) rotateY(0deg) rotateZ(0deg) skew(0deg, 0deg); transform-style: preserve-3d;">
+            <div class="ipad-mockup">
+              <div data-poster-url="" data-video-urls="" data-autoplay="true" data-loop="true" data-wf-ignore="true"
+                class="ipad-screen w-background-video w-background-video-atom"><video id="" autoplay="" loop="" muted=""
+                  playsinline="" data-wf-ignore="true" data-object-fit="cover" controls disablePictureInPicture>
+                  <source src="video/demo.mp4" data-wf-ignore="true">
+                  <source src="video/demo.mp4" data-wf-ignore="true">
+                </video></div><img src="images/ipad.svg" loading="lazy" alt="" class="ipad-shape">
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="p-sm-start container-w3 text-center">
+        <p class="infotext">Wonder AI enables a better learning experience.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="spacer"></div>
+  <div class="spacer" id="STEM"></div>
+
+
+  <!-- Masonry Layout Section -->
+  <section class="masonry-section" style="grid-template-columns: 1.5fr 1fr;">
+    <div class="masonry-text-2" style="padding: 0 60px 60px 85px;">
+      <h2
+        style="background: linear-gradient(145deg, rgba(0, 204, 255, 0.7) 20%, rgb(204, 0, 119) 95%);background-clip: text;color: transparent;-webkit-text-fill-color: transparent; -webkit-background-clip: text;">
+        Hands-On STEM Learning</h2>
+      <p
+        style="background: linear-gradient(145deg, rgba(0, 204, 255, 0.7) 40%, rgb(204, 0, 119) 95%);background-clip: text;color: transparent;-webkit-text-fill-color: transparent; -webkit-background-clip: text;">
+        Wonder introduces students to STEM concepts through hands-on, story-driven challenges. Using intuitive
+        block-based coding, kids engage in virtual building and problem-solving tasks that help the story protagonist
+        overcome obstacles. These interactive challenges make STEM learning accessible, supporting the development of
+        problem-solving skills and basic STEM knowledge in a fun, narrative-driven way that appeals to diverse
+        learners.</p>
+    </div>
+    <div class="masonry-item masonry-item-1-1" style="
+        width: 85%;
+        margin-right: auto;
+        height: 85%;
+        align-self: end;">
+
+      <img src="./images/carousel/eye.png" alt="Educational Media">
+    </div>
+
+    <div class="masonry-item-2" style="grid-template-columns: 1fr 1.5fr;">
+      <div class="masonry-item masonry-item-1-3">
+        <img src="./images/carousel/library.png" alt="Multilingual Support">
+      </div>
+      <div class="masonry-item masonry-item-1-4">
+        <img src="./images/carousel/river.png" alt="Interactive Features">
+      </div>
+    </div>
+
+  </section>
+
+  <div class="spacer" style="height:25px;"></div>
+
+
+  <section class="four-image-section">
+    <div class="masonry-text" style="padding: 0px 250px 20px 350px;">
+      <h2
+        style="background: linear-gradient(-120deg, rgba(0, 204, 255, 0.7) 40%, rgb(204, 0, 119) 95%);background-clip: text;color: transparent;-webkit-text-fill-color: transparent; -webkit-background-clip: text;">
+        Educational Integration and Impact</h2>
+      <p
+        style="background: linear-gradient(-120deg, rgba(0, 204, 255, 0.7) 40%, rgb(204, 0, 119) 95%);background-clip: text;color: transparent;-webkit-text-fill-color: transparent; -webkit-background-clip: text;">
+        Wonder seeks to integrate education curriculum in collaboration with educational experts, for instance, to
+        align with provincial standards and enable educators to integrate it into classrooms and extracurricular
+        programs. To assess impact on student engagement and literacy outcomes, the game will incorporate research and
+        feedback loops to highlight progress. The focus of Wonder is to benefit student learning as a versatile tool
+        for educational settings.</p>
+    </div>
+  </section>
+
+
+
+  <!-- Four Image Section with Captions -->
+  <section class="four-image-section">
+
+
+
+
+
+    <div class="image-container">
+      <img src="./images/carousel/lighthouse.png" alt="Innovation Unleashed">
+      <h3>Innovation Unleashed</h3>
+    </div>
+    <div class="image-container">
+      <img src="./images/carousel/palm.png" alt="Discover New Perspectives">
+      <h3>Discover New Perspectives</h3>
+    </div>
+    <div class="image-container">
+      <img src="./images/carousel/river.png" alt="Endless Creativity">
+      <h3>Endless Creativity</h3>
+    </div>
+    <div class="image-container">
+      <img src="./images/carousel/library.png" alt="Limitless Imagination">
+      <h3>Limitless Imagination</h3>
+    </div>
+  </section>
+
+
+  </div>
+
+  <div class="spacer" style="height:20px;" id="literacy"></div>
+
+  <!-- Section -->
+
+  <section class="image-text-section">
+    <img src="./images/carousel/bridge.png" alt="Large Image">
+
+    <div class="text">
+      <h2
+        style="background: linear-gradient(120deg, rgba(0, 204, 255, 0.7) 40%, rgb(204, 0, 119) 95%); background-clip: text; color: transparent; -webkit-text-fill-color: transparent; -webkit-background-clip: text;">
+        Multilingual Literacy
+      </h2>
+      <p
+        style="background: linear-gradient(120deg, rgba(0, 204, 255, 0.7) 40%, rgb(204, 0, 119) 95%); background-clip: text; color: transparent; -webkit-text-fill-color: transparent; -webkit-background-clip: text;">
+        Wonder features an AI-powered Reading Assistant that supports multiple languages, catering to students with
+        varying English proficiency levels. Real-time translation and text-to-speech capabilities enable players to
+        effortlessly navigate content and enhance comprehension. An advanced captioning system highlights key concepts
+        with interactive, color-coded keywords that display definitions when clicked. Additionally, a comprehensive
+        dictionary allows instant lookup of new words and phrases, making language learning intuitive and enjoyable for
+        all students. These features expand English vocabulary and understanding, benefiting both native and non-native
+        speakers through an immersive, inclusive learning experience.
+      </p>
+    </div>
+
+  </section>
+
+  <div class="spacer" style="height:40px;"></div>
+  <div class="spacer"></div>
+  <div class="spacer"></div>
+
+  <!-- Footer Section -->
+  <footer class="footer" id="contact">
+    <div class="footer-container">
+      <!-- Left Half: Wonder Text -->
+      <div class="footer-left">
+        <h1>Wonder</h1>
+      </div>
+
+      <!-- Right Half: Two Columns of Footer Text -->
+      <div class="footer-right">
+        <div class="footer-column">
+          <h3>About Us</h3>
+          <p>
+            Wonder is dedicated to improving English literacy & STEM for all youth, including non-native speakers,
+            empowering them to thrive in a tech-driven world.
+          </p>
+        </div>
+        <div class="footer-column">
+          <h3>Contact</h3>
+          <p>
+            Email: <a href="mailto:info@playwonder.ca" target="_blank"
+              style="font-weight: 0; color: rgb(255, 125, 208)">info@playwonder.ca</a><br>
+          </p>
+        </div>
+      </div>
+
+      <!-- Aurora Borealis Effect -->
+      <div class="footer-aurora"></div>
+    </div>
+  </footer>
+
+  <style>
+    /* Footer Styling */
+    .footer {
+      position: relative;
+      background-color: #000;
+      /* Dark background for contrast */
+      color: #e0e0e0;
+      padding: 100px 20px;
+      /* Increased padding for larger content */
+      font-family: 'Helvetica Neue', sans-serif;
+      overflow: hidden;
+      /* To contain the aurora effect */
+    }
+
+    .footer-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      /* Center vertically */
+      position: relative;
+      z-index: 1;
+      /* Ensures content is above the aurora effect */
+    }
+
+    .footer-left {
+      flex: 1;
+      padding-right: 40px;
+    }
+
+    .footer-left h1 {
+      font-family: 'AlgaLight', 'Helvetica Neue', sans-serif;
+      /* Using AlgaLight */
+      font-size: 10rem;
+      /* Significantly larger font size */
+      font-weight: 400;
+      /* Adjusted for AlgaLight */
+      color: #ffffff;
+      margin: 0;
+      line-height: 1;
+    }
+
+    .footer-right {
+      flex: 1;
+      display: flex;
+      justify-content: space-between;
+      gap: 40px;
+    }
+
+    .footer-column {
+      flex: 1;
+    }
+
+    .footer-column h3 {
+      font-size: 2rem;
+      margin-bottom: 20px;
+      color: #ffffff;
+      font-family: 'AlgaLight';
+      font-weight: 100;
+    }
+
+    .footer-column p {
+      font-size: 1rem;
+      line-height: 1.6;
+      color: rgb(255 255 255 / 62%);
+    }
+
+    /* Aurora Borealis Effect for Footer */
+    .footer-aurora {
+      position: absolute;
+      top: -20vh;
+      /* Same as existing aurora-container */
+      left: 0;
+      width: 100%;
+      height: 100vh;
+      /* Same as existing aurora-container */
+      background: linear-gradient(120deg, rgba(255, 0, 150, 0.3), rgba(0, 204, 255, 0.3), rgba(0, 255, 150, 0.3));
+      background-size: 200% 200%;
+      filter: blur(80px);
+      /* Match existing blur */
+      opacity: 0.7;
+      /* Match existing opacity */
+      animation: aurora 4s ease-in-out infinite alternate;
+      /* Same animation */
+      pointer-events: none;
+      /* Allows interactions through the aurora */
+      z-index: -1;
+      /* Places it behind the footer content */
+    }
+
+    /* Aurora Animation */
+    @keyframes aurora {
+      0% {
+        background-position: 0% 50%;
+      }
+
+      50% {
+        background-position: 20% 70%;
+      }
+
+      100% {
+        background-position: 0% 50%;
+      }
+    }
+
+    /* Responsive Design */
+    @media (max-width: 1200px) {
+      .footer-container {
+        max-width: 1000px;
+      }
+    }
+
+    @media (max-width: 992px) {
+      .footer-container {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+      }
+
+      .footer-left {
+        padding-right: 0;
+        margin-bottom: 60px;
+      }
+
+      .footer-right {
+        flex-direction: column;
+        gap: 40px;
+      }
+
+      .footer-column h3 {
+        font-size: 1.8rem;
+      }
+
+      .footer-left h1 {
+        font-size: 8rem;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .footer-left h1 {
+        font-size: 6rem;
+      }
+
+      .footer-column h3 {
+        font-size: 1.6rem;
+      }
+
+      .footer-column p {
+        font-size: 0.95rem;
+      }
+    }
+
+    @media (max-width: 576px) {
+      .footer-left h1 {
+        font-size: 4rem;
+      }
+
+      .footer-column h3 {
+        font-size: 1.4rem;
+      }
+
+      .footer-column p {
+        font-size: 0.9rem;
+      }
+    }
+  </style>
+  <script>
+    const devMode = false; // Set to true to disable video animation
+    var animationStarted = false;
+
+    (function () {
+      const carousel = document.getElementById('carousel');
+      const items = carousel.getElementsByClassName('carousel-item');
+      let rotationY = 0;
+      const defaultSpeed = 6;
+      const initialSpeed = 300;
+      const slowSpeed = 2.5;
+      const transitionDuration = 3000;
+      let rotationSpeed = 0;
+      let targetRotationSpeed = defaultSpeed;
+      let lastTime = performance.now();
+      let startTime = null;
+
+      function rotateCarousel(currentTime) {
+        if (!animationStarted) {
+          lastTime = currentTime;
         }
+        const deltaTime = currentTime - lastTime;
+        lastTime = currentTime;
+
+        if (animationStarted) {
+          if (!startTime) {
+            startTime = currentTime;
+            rotationSpeed = initialSpeed;
+          }
+          const timeElapsed = currentTime - startTime;
+          if (timeElapsed < transitionDuration) {
+            rotationSpeed = initialSpeed - ((initialSpeed - targetRotationSpeed) * (timeElapsed / transitionDuration));
+          } else {
+            rotationSpeed = targetRotationSpeed;
+          }
+        }
+
+        rotationY += rotationSpeed * (deltaTime / 1000);
+        carousel.style.transform = `rotateY(${rotationY}deg)`;
+        requestAnimationFrame(rotateCarousel);
+      }
+
+      requestAnimationFrame(rotateCarousel);
+
+      function handleInteractionStart(event) {
+        targetRotationSpeed = slowSpeed;
+        event.currentTarget.classList.add('active');
+      }
+
+      function handleInteractionEnd(event) {
+        targetRotationSpeed = defaultSpeed;
+        event.currentTarget.classList.remove('active');
+      }
+
+      for (let item of items) {
+        item.addEventListener('mouseenter', handleInteractionStart);
+        item.addEventListener('mouseleave', handleInteractionEnd);
+        item.addEventListener('touchstart', handleInteractionStart);
+        item.addEventListener('touchend', handleInteractionEnd);
+      }
+
+      if (!devMode) {
+        const video = document.getElementById("intro-video");
+        video.addEventListener('transitionend', function (event) {
+          if (event.propertyName === 'opacity') {
+            animationStarted = true;
+          }
+        });
+      } else {
+        document.getElementById("intro-video").style.display = "none";
+        document.getElementById("main-content").classList.add("visible");
+        animationStarted = true;
+        document.body.style.overflowY = "visible";
+
+      }
+    })();
+
+    document.addEventListener("DOMContentLoaded", function () {
+      const video = document.getElementById("intro-video");
+      const content = document.getElementById("main-content");
+      const wonderText = document.getElementById("wonder-text");
+      const wonderTranslation = document.getElementById("translations");
+
+      if (!devMode) {
+        video.addEventListener("timeupdate", function () {
+
+          // Start fading out the video 2 seconds before it ends
+          if (video.duration - video.currentTime <= 2) {
+            animationStarted = true;
+
+            content.classList.add('visible');
+            video.style.opacity = 0;
+
+
+            // Add a delay of 1.5 seconds before showing the texts
+            setTimeout(function () {
+              if (wonderText) wonderText.classList.add("visible");
+              if (wonderTranslation) wonderTranslation.classList.add("visible");
+            }, 1000); // 1500 milliseconds = 1.5 seconds
+          }
+        });
+
+        video.addEventListener('transitionend', function (event) {
+          if (event.propertyName === 'opacity') {
+
+            document.getElementById("intro-video").style.display = "none";
+            document.body.style.overflowY = "visible";
+            content.classList.add('visible');
+          }
+        });
+      } else {
+        if (wonderText) wonderText.classList.add("visible");
+        if (wonderTranslation) wonderTranslation.classList.add("visible");
+      }
     });
 
 
-</script>
-<script>
-    document.addEventListener('DOMContentLoaded', () => {
-        const fadeInElements = document.querySelectorAll('.fade-in');
-        
-        const observer = new IntersectionObserver((entries, observer) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                    observer.unobserve(entry.target); // Stop observing once the element is visible
-                }
-            });
-        }, {
-            threshold: 0.1, // Trigger when at least 10% of the element is visible
+    document.addEventListener("DOMContentLoaded", function () {
+      const observerOptions = {
+        root: null,
+        rootMargin: "0px",
+        threshold: 0.4
+      };
+
+      const onScrollAnimation = (entries, observer) => {
+        entries.forEach((entry, index) => {
+          if (entry.isIntersecting) {
+            // Set a delay based on the index to create the staggered effect
+            const delay = index * 300; // 300ms delay per item
+            setTimeout(() => {
+              entry.target.classList.add("visible");
+            }, delay);
+
+            observer.unobserve(entry.target); // Stop observing after animation starts
+          }
         });
-        
-        fadeInElements.forEach(element => {
-            observer.observe(element);
-        });
+      };
+
+      const observer = new IntersectionObserver(onScrollAnimation, observerOptions);
+
+      // Select both text and images
+      const textAndImageElements = document.querySelectorAll(
+        ".ipad-text, .ipad-subtext, .text, .masonry-text, .masonry-text-2, .four-image-section h3, .image-text-section img, .masonry-item img, .four-image-section .image-container img, .feature"
+      );
+
+      // Observe each text and image element
+      textAndImageElements.forEach(el => observer.observe(el));
     });
-</script>
+  </script>
+
+  <script src="jquery.min.js" type="text/javascript"></script>
+
+  <script src="main.js" type="text/javascript"></script>
+</body>
 
 </html>
