@@ -202,6 +202,7 @@
             padding-right: calc(50vw - 175px - 3px); /* Reduced by 3px for flush alignment */
             margin-left: -20px; /* Negate the content's left padding */
             margin-right: -20px; /* Allow images to extend beyond the right */
+            touch-action: manipulation;
         }
 
         .image-scroll img {
@@ -213,6 +214,7 @@
             scroll-snap-align: center;
             position: relative;
             height: 100%; /* Make images take full height of the scroller */
+            touch-action: manipulation;
         }
 
 
@@ -495,12 +497,12 @@
         <section class="scroll-section fade-in" id="purpose">
             <!-- Removed h2 "Features" -->
             <div class="image-scroll">
-                <img src="./images/carousel/bridge.png" alt="Educational Media" loading="eager">
+                <img src="./images/carousel/river.png" alt="Educational Media" loading="eager">
                 <img src="./images/carousel/library.png" alt="AI Reading Assistant" loading="eager">
-                <img src="./images/carousel/river.png" alt="STEM Learning" loading="lazy">
+                <img src="./images/carousel/bridge.png" alt="STEM Learning" loading="lazy">
                 <img src="./images/carousel/earth.png" alt="Interactive Adventures" loading="lazy">
                 <img src="./images/carousel/lighthouse.png" alt="Multilingual Support" loading="lazy">
-                <img src="./images/carousel/library.png" alt="Cultural Inclusion" loading="lazy">
+                <img src="./images/carousel/planet.png" alt="Cultural Inclusion" loading="lazy">
                 <img src="./images/carousel/palm.png" alt="Curriculum Alignment" loading="lazy">
             </div>
         </section>
@@ -511,7 +513,15 @@
                 <h2 style="text-align: left;">About Wonder</h2>
                 <p>Wonder is an immersive, story-driven educational game designed to enhance learning for youth and support English comprehension for non-native speakers. Set in a vibrant digital art world, players engage in interactive adventures, STEM activities, and literacy challenges. The game integrates AI and a culturally inclusive approach, aligning with educational curricula to create an engaging and effective learning experience.</p>
             </div>
-            <img class="fade-in" src="./images/carousel/library.png" alt="Overview Image" loading="eager">
+
+            
+        <video 
+        src="/video/demo.mp4" 
+        style="width: 100%; max-width: 800px; margin: 20px auto; display: block; border-radius: 10px; background-color: #000;" 
+        controls 
+        poster="/images/carousel/library.png" controls autoplay muted playsinline>
+        Your browser does not support the video tag.
+    </video>
 
         </section>
 
@@ -530,6 +540,8 @@
                 <p>Wonder introduces students to STEM concepts through hands-on, story-driven challenges. Using intuitive block-based coding, kids engage in virtual building and problem-solving tasks that help the story protagonist overcome obstacles. These interactive challenges make STEM learning accessible, supporting the development of problem-solving skills and basic STEM knowledge in a fun, narrative-driven way that appeals to diverse learners.</p>
             </div>
         </section>
+
+
 
         <!-- Educational Integration and Impact Section -->
         <section class="image-text-section">
