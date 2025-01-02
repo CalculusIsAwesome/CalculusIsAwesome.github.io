@@ -41,9 +41,8 @@
   <link href="https://fonts.googleapis.com/css2?family=Helvetica+Neue:wght@300;400;700&display=swap" rel="stylesheet">
   <link href="styles.css" rel="stylesheet" type="text/css">
   <script>
-        var mobileMediaQuery = window.matchMedia("(min-width: 769px)");
-        if (mobileMediaQuery.matches && window.location.href.includes("discover.html")) {
-            window.location.replace("index.html");
+        if (/Mobi|Android/i.test(navigator.userAgent) && window.location.href.includes("index.html")) {
+            window.location.replace("discover.html");
         }
   </script>
 
