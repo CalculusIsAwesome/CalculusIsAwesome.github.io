@@ -41,15 +41,10 @@
   <link href="https://fonts.googleapis.com/css2?family=Helvetica+Neue:wght@300;400;700&display=swap" rel="stylesheet">
   <link href="styles.css" rel="stylesheet" type="text/css">
   <script>
-    window.onload = function () {
-      var mobileMediaQuery = window.matchMedia("(max-width: 768px)");
-      if (mobileMediaQuery.matches) {
-        if (window.location.href.endsWith("/") || window.location.href.includes("index.html")) {
-          console.log("Redirecting to discover.html");
-          window.location.href = "discover.html";
+        var mobileMediaQuery = window.matchMedia("(min-width: 769px)");
+        if (mobileMediaQuery.matches && window.location.href.includes("discover.html")) {
+            window.location.replace("index.html");
         }
-      }
-    };
   </script>
 
   <style>
