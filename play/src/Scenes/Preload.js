@@ -1,4 +1,4 @@
-import LoadUI from "./UI/LoadUI.js"
+import LoadUI from "../UI/LoadUI.js"
 
 
 export default class Preload extends Phaser.Scene {
