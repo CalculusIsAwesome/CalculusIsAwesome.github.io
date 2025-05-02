@@ -1,0 +1,88 @@
+{
+    "Global": {
+        "files": [
+            {
+                "url": "assets/walk.png",
+                "key": "walk",
+                "type": "spritesheet",
+                "frameConfig": {
+                    "frameWidth": 120,
+                    "frameHeight": 249
+                }
+            },
+            {
+                "url": "assets/idle.png",
+                "key": "idle",
+                "type": "spritesheet",
+                "frameConfig": {
+                    "frameWidth": 120,
+                    "frameHeight": 249
+                }
+            },
+            {
+                "url": "assets/jump.png",
+                "key": "jump",
+                "type": "spritesheet",
+                "frameConfig": {
+                    "frameWidth": 173,
+                    "frameHeight": 309
+                }
+            },
+
+            {
+                "url": "assets/characters/pet/IDLE.png",
+                "key": "cat-idle",
+                "type": "spritesheet",
+                "frameConfig": {
+                    "frameWidth": 80,
+                    "frameHeight": 64
+                }
+            },
+
+            {
+                "url": "assets/characters/pet/WALK.png",
+                "key": "cat-walk",
+                "type": "spritesheet",
+                "frameConfig": {
+                    "frameWidth": 80,
+                    "frameHeight": 64
+                }
+            }
+
+        ]
+    },
+
+    "Lobby": {
+        "files": [
+            {
+                "url": "assets/lobby.png",
+                "key": "lobby",
+                "type": "image"
+            }
+        ]
+    },
+
+    "Bridge": {
+        "files": [
+            {
+                "url": "assets/bridge.jpg",
+                "key": "bridge",
+                "type": "image"
+            },
+            {
+                "url": "assets/overlay.png",
+                "key": "overlay",
+                "type": "image"
+            }
+        ]
+    },
+    "Library": {
+        "files": [
+            {
+                "url": "assets/library.png",
+                "key": "library",
+                "type": "image"
+            }
+        ]
+    }
+}
