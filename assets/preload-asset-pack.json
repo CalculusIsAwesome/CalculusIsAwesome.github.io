@@ -1,0 +1,15 @@
+{
+    "section1": {
+        "files": [
+            {
+                "url": "assets/loading.png",
+                "key": "loading",
+                "type": "spritesheet",
+                "frameConfig": {
+                    "frameWidth": 375,
+                    "frameHeight": 250
+                }
+            }
+        ]
+    }
+}
